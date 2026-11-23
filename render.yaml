@@ -1,0 +1,23 @@
+databases:
+  - name: biznes-analitica-db
+    databaseName: biznes_analitica
+    user: biznes_analitica
+    plan: basic-256mb   # bepul (free) reja 30 kundan keyin o‘chadi; real ma’lumot uchun pullik reja
+
+services:
+  - type: web
+    name: biznes-analitica
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        fromDatabase:
+          name: biznes-analitica-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
